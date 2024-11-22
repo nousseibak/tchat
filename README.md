@@ -1,6 +1,7 @@
 Proof of Concept d'un Tchat
 
 ####################
+
 Technologies utilisées:
 
 - java 17
@@ -10,6 +11,7 @@ Technologies utilisées:
 - STOMP pour gérer les messages en temps réel
 
 #################
+
 Pour lancer le projet:
 
 - mvn spring-boot:run
