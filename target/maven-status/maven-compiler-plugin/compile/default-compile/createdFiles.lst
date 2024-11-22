@@ -1,6 +1,3 @@
-com\openclassroom\tchat\WebSocketConfig.class
-com\openclassroom\tchat\ChatServer$ClientHandler.class
-com\openclassroom\tchat\ChatClient.class
 com\openclassroom\tchat\ChatController.class
+com\openclassroom\tchat\WebSocketConfig.class
 com\openclassroom\tchat\TchatApplication.class
-com\openclassroom\tchat\ChatServer.class
