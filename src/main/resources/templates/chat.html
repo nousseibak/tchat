@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Chat</title>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.1/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+</head>
+<body>
+<h1>Bienvenue dans le chat</h1>
+<div id="chatArea">
+    <!-- Les messages apparaîtront ici -->
+</div>
+<input id="messageField" placeholder="Entrez votre message" type="text"/>
+<button onclick="sendMessage()">Envoyer</button>
+
+<script>
+        let stompClient = null;
+
+        // Fonction de connexion WebSocket
+        function connect() {
+            const socket = new SockJS('/chat'); // L'endpoint WebSocket
+            stompClient = Stomp.over(socket);
+
+        stompClient.connect({}, function (frame) {
+            console.log('Connecté : ' + frame);
+            stompClient.subscribe('/topic/messages', function (messageOutput) {
+                const message = messageOutput.body;
+                console.log("Message reçu : " + message);  // Vérification de la réception du message
+                displayMessage(message);  // Afficher le message
+            });
+        });
+        }
+
+        // Fonction pour envoyer un message
+        function sendMessage() {
+            const message = document.getElementById("messageField").value;
+            if (stompClient !== null && stompClient.connected) {  // Vérifiez si le client est connecté
+                stompClient.send("/app/sendMessage", {}, message); // Envoi du message
+                document.getElementById("messageField").value = "";  // Réinitialiser le champ du message
+            } else {
+                alert("Connexion WebSocket non établie, réessayez plus tard.");
+            }
+        }
+
+        // Fonction pour afficher les messages dans la zone de chat
+        function displayMessage(message) {
+            const chatArea = document.getElementById("chatArea");
+            const newMessage = document.createElement("div");
+            newMessage.innerText = message;
+            chatArea.appendChild(newMessage);
+        }
+
+        // Se connecter lorsque la page est chargée
+        window.onload = function () {
+            connect();
+        };
+
+
+
+</script>
+</body>
+</html>
